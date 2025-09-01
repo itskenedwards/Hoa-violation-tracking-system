@@ -265,7 +265,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const initTimeout = setTimeout(() => {
         if (mounted) {
           addDebugLog('⏰ Auth initialization timeout');
-          setLoading(false);
+          //setLoading(false);
           setProfileLoadError(null); // Don't set error, just show login
         }
       }, 10000); // 10 second timeout for initial check

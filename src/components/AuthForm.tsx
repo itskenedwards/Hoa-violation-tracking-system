@@ -357,14 +357,14 @@ export default function AuthForm({ mode, onModeChange, onForgotPassword, showDat
                   <button
                     type="button"
                     onClick={onShowAccessTest}
-                    className="w-full text-center text-green-600 hover:text-green-800 underline transition-colors text-sm"
+                    className="w-full text-center text-stone-50 hover:text-green-200 underline transition-colors text-sm"
                   >
                     Run User Access Test
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowDebug(!showDebug)}
-                    className="w-full text-center text-blue-600 hover:text-blue-800 underline transition-colors text-sm mt-1"
+                    className="w-full text-center text-stone-50 hover:text-blue-200 underline transition-colors text-sm mt-1"
                   >
                     {showDebug ? 'Hide' : 'Show'} Debug Logs
                   </button>

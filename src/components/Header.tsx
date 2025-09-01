@@ -154,7 +154,7 @@ export default function Header({ onAddViolation }: HeaderProps) {
 
               {/* Debug menu - only show in development or for super admins */}
               {(import.meta.env.DEV || user?.roles.some(r => r.name === 'Super Admin')) && (
-                <div className="relative">
+                <div className="relative" style={display: 'none'}>
                   <button
                     onClick={() => setShowDebugMenu(!showDebugMenu)}
                     className="text-gray-600 hover:text-gray-800 transition-colors"

@@ -52,7 +52,7 @@ export default function DatabaseTestButton() {
 
   const getLinkStyle = () => {
     if (isRunning) return "text-blue-600";
-    if (!testResult) return "text-blue-600 hover:text-blue-800";
+    if (!testResult) return "text-stone-50 hover:text-stone-800";
     
     const successRate = testResult.includes('100.0%') ? 100 : 
                        testResult.includes('80.0%') || testResult.includes('60.0%') ? 80 : 0;

@@ -41,7 +41,7 @@ export default function Dashboard({ violations }: DashboardProps) {
         <h2 className="text-xl font-semibold text-gray-800">Dashboard Overview</h2>
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+          className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg min-w-48 flex-shrink-0 transition-colors"
           aria-label={isCollapsed ? "Expand dashboard" : "Collapse dashboard"}
         >
           <span className="text-sm font-medium">
@@ -54,9 +54,9 @@ export default function Dashboard({ violations }: DashboardProps) {
           )}
         </button>
       </div>
-
+      {////grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6}
       {!isCollapsed && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="flex flex-row overflow-x-auto pb-4 gap-6"> 
           <StatCard
             title="Total Violations"
             value={stats.total}

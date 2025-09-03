@@ -17,7 +17,7 @@ export default function Header({ onAddViolation }: HeaderProps) {
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showAssociationManagement, setShowAssociationManagement] = useState(false);
   const [showCategoryManagement, setShowCategoryManagement] = useState(false);
-  const [showDebugMenu = useState(false); //, setShowDebugMenu]
+  const [showDebugMenu] = useState(false); //, setShowDebugMenu]
   const [showAssociationMenu, setShowAssociationMenu] = useState(false);
 
   const handleClearAuthState = async () => {

@@ -54,7 +54,7 @@ export default function Dashboard({ violations }: DashboardProps) {
           )}
         </button>
       </div>
-      {////grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6}
+      
       {!isCollapsed && (
         <div className="flex flex-row overflow-x-auto pb-4 gap-6"> 
           <StatCard

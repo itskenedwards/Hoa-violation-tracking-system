@@ -155,7 +155,7 @@ export default function AuthForm({ mode, onModeChange, onForgotPassword, showDat
         <div>
           <div className="flex justify-center items-center space-x-4">
             <Home className="h-28 w-28 text-blue-600" />
-            <h1 className="text-center text-2xl font-bold text-gray-900">
+            <h1 className="text-center text-3xl font-bold text-gray-900">
               HOA Homeowner Violation Tracking System
             </h1>
           </div>

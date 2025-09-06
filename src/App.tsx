@@ -1,4 +1,4 @@
-import { useState, useEffect, ChevronUp, ChevronDown} from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import AuthForm from './components/AuthForm';
@@ -17,7 +17,7 @@ import { useViolations } from './hooks/useViolations';
 import { useViolationCategories } from './hooks/useViolationCategories';
 import { filterViolations, sortViolations } from './utils/violationUtils';
 import { supabase } from './lib/supabase';
-import { Home, AlertCircle } from 'lucide-react';
+import { Home, AlertCircle, ChevronUp, ChevronDown, Filter } from 'lucide-react';
 import UserAccessTest from './components/UserAccessTest';
 
 const initialFilters: ViolationFilters = {
@@ -43,6 +43,7 @@ function AppContent() {
   const [showAccessTest, setShowAccessTest] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('table'); // Default to table
   const [viewingViolation, setViewingViolation] = useState<any>(null);
+  const [isFilterCollapsed, setIsFilterCollapsed] = useState(false);
 
   // Check for password reset flow and OAuth users without profiles (only on mount)
   useEffect(() => {
@@ -274,11 +275,36 @@ function AppContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Dashboard violations={violations} />
         
-        <FilterBar 
-          filters={filters} 
-          onFiltersChange={setFilters}
-          associations={uniqueAssociations}
-        />
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-3">
+              <Filter className="h-5 w-5 text-blue-600" />
+              <h3 className="text-lg font-semibold text-gray-800">Filter Violations</h3>
+            </div>
+            <button
+              onClick={() => setIsFilterCollapsed(!isFilterCollapsed)}
+              className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg min-w-32 flex-shrink-0 transition-colors"
+              aria-label={isFilterCollapsed ? "Show filters" : "Hide filters"}
+            >
+              <span className="text-sm font-medium">
+                {isFilterCollapsed ? 'Show' : 'Hide'} Filters
+              </span>
+              {isFilterCollapsed ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronUp className="h-4 w-4" />
+              )}
+            </button>
+          </div>
+          
+          {!isFilterCollapsed && (
+            <FilterBar 
+              filters={filters} 
+              onFiltersChange={setFilters}
+              associations={uniqueAssociations}
+            />
+          )}
+        </div>
 
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-800">

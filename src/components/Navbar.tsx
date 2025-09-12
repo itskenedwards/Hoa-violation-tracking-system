@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Menu, X, User, LogOut, Settings, ChevronDown, Building2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAssociation } from '../contexts/AssociationContext';
@@ -6,23 +6,8 @@ import { useAssociation } from '../contexts/AssociationContext';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAssociationDropdownOpen, setIsAssociationDropdownOpen] = useState(false);
-  const associationDropdownRef = useRef<HTMLDivElement>(null);
   const { user, signOut } = useAuth();
   const { currentAssociation, userAssociations, switchAssociation } = useAssociation();
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (associationDropdownRef.current && !associationDropdownRef.current.contains(event.target as Node)) {
-        setIsAssociationDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const handleSignOut = async () => {
     try {
@@ -51,7 +36,7 @@ export default function Navbar() {
           <div className="hidden md:flex md:items-center md:space-x-4">
             {/* Association Selector */}
             {userAssociations && userAssociations.length > 1 && (
-              <div className="relative" ref={associationDropdownRef}>
+              <div className="relative">
                 <button
                   onClick={() => setIsAssociationDropdownOpen(!isAssociationDropdownOpen)}
                   className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors"
@@ -101,40 +86,28 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               {user && (
                 <div className="relative">
-                  <div className="flex items-center space-x-3">
-                    <div className="flex items-center space-x-2">
-                      <User className="h-5 w-5 text-gray-400" />
-                      <span className="text-sm font-medium text-gray-700">
-                        {user.email}
-                      </span>
-                    </div>
-                    <button
-                      onClick={handleSignOut}
-                      className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    <User className="h-8 w-8 rounded-full bg-gray-300 p-1" />
+                    <span className="text-gray-700">{user.email}</span>
+                  </button>
                 </div>
               )}
+              
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              >
+                {isOpen ? (
+                  <X className="block h-6 w-6" />
+                ) : (
+                  <Menu className="block h-6 w-6" />
+                )}
+              </button>
             </div>
           </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="bg-gray-50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-            >
-              {isOpen ? (
-                <X className="block h-6 w-6" />
-              ) : (
-                <Menu className="block h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </div>
 
           {/* Mobile menu */}
           <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} border-t border-gray-200`}>
@@ -177,27 +150,26 @@ export default function Navbar() {
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <User className="h-8 w-8 text-gray-400" />
+                      <User className="h-10 w-10 rounded-full bg-gray-300 p-2" />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">
-                        {user.email}
-                      </div>
+                      <div className="text-base font-medium text-gray-800">{user.email}</div>
                     </div>
                   </div>
                   <div className="mt-3 px-2 space-y-1">
                     <button
                       onClick={handleSignOut}
-                      className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                      className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-gray-600 hover:bg-gray-50 w-full text-left"
                     >
                       <LogOut className="mr-3 h-5 w-5" />
-                      Sign Out
+                      Sign out
                     </button>
                   </div>
                 </div>
               )}
             </div>
           </div>
+        </div>
       </div>
     </nav>
   );

@@ -13,7 +13,7 @@
 
 -- Drop the existing restrictive INSERT policy
 DROP POLICY IF EXISTS "Users can create their own profile" ON user_profiles;
-
+DROP POLICY IF exists  "Users can create their initial profile during signup" ON user_profiles;
 -- Create a new INSERT policy that allows profile creation during signup
 CREATE POLICY "Users can create their initial profile during signup"
   ON user_profiles

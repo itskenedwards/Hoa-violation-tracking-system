@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         addDebugLog(`👤 Profile error: ${profileResult.error.message}`);
         setLoading(false);
         
-        if (profileResult.error.code === 'PGRST116') {
+        if (profileResult.error.code === 'PGRST116' || profileResult.error.message.includes('No rows found')) {
           setProfileLoadError('No user profile found. Please sign up or contact support.');
         } else {
           setProfileLoadError('Failed to load user profile. Please try again.');
@@ -335,6 +335,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setProfileLoadError(null);
         setLoading(false);
         setAuthInitialized(false); // Reset for next auth flow
+      } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+        addDebugLog('🔄 Token refreshed');
+        // Don't reload profile on token refresh if we already have a user
+        if (!user) {
+          await loadUserProfile(session.user);
+        }
       }
     });
     
@@ -398,6 +404,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       addDebugLog(`🔑 Signing in: ${email}`);
       setProfileLoadError(null);
+      setLoading(true);
       
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -406,6 +413,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         addDebugLog(`🔑 Sign in error: ${error.message}`);
+        setLoading(false);
         if (error.message.includes('Invalid login credentials')) {
           return { error: 'Invalid email or password. Please check your credentials and try again.' };
         } else {
@@ -414,9 +422,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       addDebugLog('🔑 Sign in successful');
+      // Don't set loading to false here - let the auth state change handler do it
       return { error: null };
     } catch (error: any) {
       addDebugLog(`🔑 Sign in exception: ${error.message}`);
+      setLoading(false);
       return { error: 'An unexpected error occurred' };
     }
   };
